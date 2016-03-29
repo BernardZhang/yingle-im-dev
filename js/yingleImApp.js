@@ -25,7 +25,7 @@ var
     timestampList = [], // 记录分页时间节点
     msgTime;// 最早一条消息的时间戳
 
-var lowyers = [];
+// var lowyers = [];
 
 // 1. 获取律师
 
@@ -35,9 +35,9 @@ var lowyers = [];
 
 // 3. 加入房间， 获取当前后动状态的聊天记录并显示
 
-createRooms
-
-creteRoom
+// createRooms
+//
+// creteRoom
 
 //Customer端
 $('#lawyerList a').on('click', function () {
