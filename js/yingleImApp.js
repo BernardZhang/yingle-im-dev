@@ -2,7 +2,31 @@
  * 赢了网实时通信系统
  * Created by pengyanhua on 2016/03/23
  */
-var yingleImApp = function (pageId, customId, lawyerId) {
+
+//Customer端
+$('#lawyerList a').on('click', function () {
+    var pageId = $('.pageId').attr('id');
+    var customId = $('.customId').attr('id');
+    var lawyerId = $(this).attr('id');
+    var clientId = customId + '-' + pageId;
+    var memberId = lawyerId;
+    var memberName = $(this).attr('data');
+    yingleImApp(pageId, customId, lawyerId, clientId, memberId, memberName);
+});
+
+//Lawyer端
+$('#customList a').on('click', function () {
+    var pageId = $('.pageId').attr('id');
+    var lawyerId = $('.lawyerId').attr('id');
+    var customId = $(this).attr('id');
+    var clientId = lawyerId;
+    var memberId = customId + '-' + pageId;
+    var memberName = $(this).attr('data');
+    yingleImApp(pageId, customId, lawyerId, clientId, memberId, memberName);
+});
+
+
+var yingleImApp = function (pageId, customId, lawyerId, clientId, memberId, memberName) {
 
     // AppId
     var appId = 'X2UogMH6UVTkPJjHDfuPLhIF-gzGzoHsz';
@@ -20,7 +44,9 @@ var yingleImApp = function (pageId, customId, lawyerId) {
     var lawyerId = lawyerId;
 
     // 定义新的id
-    var clientId, memberId, memberName;
+    var clientId = clientId;
+    var memberId = memberId;
+    var memberName = memberName;
 
     // 用来存储 realtimeObject
     var rt;
@@ -43,30 +69,14 @@ var yingleImApp = function (pageId, customId, lawyerId) {
     // 最早一条消息的时间戳
     var msgTime;
 
+
+    console.log('当前页面id：' + pageId);
+    console.log('当前客户id：' + customId);
+    console.log('当前律师id：' + lawyerId);
+    console.log('当前登入用户id：' + clientId);
+
     //点击链接和发送事件
     $('#send-btn').on('click', sendMsg);
-
-    //Custom端
-    $('#lawyerList a').on('click', function () {
-        pageId = $('.pageId').attr('id');
-        customId = $('.customId').attr('id');
-        lawyerId = $(this).attr('id');
-        clientId = customId + '-' + pageId;
-        memberId = lawyerId;
-        memberName = $(this).attr('data');
-        main();
-    });
-
-    //Lawyer端
-    $('#customList a').on('click', function () {
-        pageId = $('.pageId').attr('id');
-        lawyerId = $('.lawyerId').attr('id');
-        customId = $(this).attr('id');
-        clientId = lawyerId;
-        memberId = customId + '-' + pageId;
-        memberName = $(this).attr('data');
-        main();
-    });
 
     bindEvent(document.body, 'keydown', function (e) {
         if (e.keyCode === 13) {
@@ -352,13 +362,4 @@ var yingleImApp = function (pageId, customId, lawyerId) {
             dom.attachEvent('on' + eventName, fun);
         }
     }
-
-    return {
-        //pageId: pageId,
-        //customId: customId,
-        //lawyerId: lawyerId,
-        init: function () {
-            main();
-        }
-    }
-}();
+};
