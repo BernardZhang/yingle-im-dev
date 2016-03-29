@@ -80,11 +80,11 @@ var yingleImApp = function (pageId, customId, lawyerId) {
     // 连接服务器
     function main() {
         console.log('正在连接服务器，请等待。。。');
-        console.log(pageId);
-        console.log(customId);
-        console.log(lawyerId);
-        console.log(clientId);
-        console.log(firstFlag);
+        console.log('当前页面id：' + pageId);
+        console.log('当前客户id：' + customId);
+        console.log('当前律师id：' + lawyerId);
+        console.log('当前登入用户id：' + clientId);
+        console.log('当前连接状态' + firstFlag);
 
         if (!firstFlag) {
             rt.close();
