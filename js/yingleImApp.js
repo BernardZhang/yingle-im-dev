@@ -140,7 +140,7 @@ var yingleImApp = function (pageId, customId, lawyerId) {
                             // 获取聊天历史
                             getLog(function () {
                                 printWall.scrollTop = printWall.scrollHeight;
-                                console.log('您已经加入，可以开始聊天。');
+                                showLog('您已经加入，可以开始对话了。');
                             });
                         });
 
