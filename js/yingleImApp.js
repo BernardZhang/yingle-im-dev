@@ -84,7 +84,7 @@ var yingleImApp = function (pageId, customId, lawyerId) {
         console.log('当前客户id：' + customId);
         console.log('当前律师id：' + lawyerId);
         console.log('当前登入用户id：' + clientId);
-        console.log('当前连接状态' + firstFlag);
+        console.log('当前是否需要重新连接：' + firstFlag);
 
         if (!firstFlag) {
             rt.close();
