@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>赢了网实时通信系统</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="user-scalable=no">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <link rel="stylesheet" href="css/yingle-im.css">
+    <!--<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>-->
+    <script type="text/javascript" src="js/combined-plugin-1-pc-20151222124206.js"></script>
+    <script type="text/javascript" src="js/combined-plugin-2-pc-20151222124206.js"></script>
+    <script type="text/javascript" src="js/combined-plugin-3-pc-20160322124100.js"></script>
+    <script type="text/javascript" src="js/combined-page-pc-20160322124100.js"></script>
+</head>
+
+<body>
+<div class="side">
+    <div class="side-padding">
+        <p><a href="customer.html">客户端</a></p>
+        <p><a href="lawyer.html">律师端</a></p>
+    </div>
+</div>
+<div class="side">
+    <div class="side-padding">
+        <div>律师端</div>
+        <ul id="customList">
+            <li><a href="javascript:" id="c1" data="客户1">联系他</a></li>
+        </ul>
+    </div>
+</div>
+<div class="main">
+    <h1>赢了网实时通信系统</h1>
+    <div class="item">
+        <div id="print-wall" class="print-wall"></div>
+    </div>
+    <div class="item">
+        <label>输入信息：</label>
+        <textarea id="input-send" class="input-send" rows="5" cols="20"></textarea>
+        <div id="send-btn" class="btn">发送</div>
+    </div>
+</div>
+<!-- S 引入插件，兼容低 IE8+ 等低版本浏览器，注意看下面的注释。如果不需要兼容，可以去掉这部分。 -->
+<!--[if lt IE 10]>
+<script type="text/javascript" src="plugin/web-socket-js/swfobject.js"></script>
+<script type="text/javascript" src="plugin/web-socket-js/web_socket.js"></script>
+<script type="text/javascript">
+    // 设置变量，配置插件中 WebSocketMain.swf 的引用路径
+    WEB_SOCKET_SWF_LOCATION = "plugin/web-socket-js/WebSocketMain.swf";
+</script>
+<![endif]-->
+<!-- E 引入插件 -->
+
+<!-- 引入 LeanCloud 实时通信 SDK -->
+<script src="js/AV.realtime.js"></script>
+<!-- 业务逻辑文件 -->
+<script src="js/yingleImApp.js"></script>
+<!--Lawyer端-->
+<div style="display:none;">
+    <span class="pageId" id="p1"></span>
+    <span class="lawyerId" id="l1" data="律师1"></span>
+</div>
+</body>
+
+</html>
