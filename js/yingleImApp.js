@@ -13,7 +13,7 @@ var
     clientId,
     memberId,
     memberName,
-    pageLimit = 7, // 每页消息记录条数
+    pageLimit = 3, // 每页消息记录条数
 
     rt,// 用来存储 realtimeObject
     room,// 用来存储创建好的 roomObject
@@ -109,7 +109,6 @@ $('#history_record_next').on('click', function () {
         limit: pageLimit
     }, function (data) {
         if (data && data.length) {
-            currentPage--;
             timestampList.shift();
             timestampList.shift();
             renderHistoryRecord(data);
