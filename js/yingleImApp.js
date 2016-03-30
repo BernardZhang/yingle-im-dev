@@ -61,6 +61,7 @@ $('#customList a').on('click', function () {
     clientId = lawyerId;
     memberId = customId + '-' + pageId;
     memberName = $(this).attr('data');
+    printWall.innerHTML = '';
     main();
 });
 
