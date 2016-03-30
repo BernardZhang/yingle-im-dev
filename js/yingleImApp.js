@@ -48,6 +48,7 @@ $('#lawyerList a').on('click', function () {
     clientId = customId + '-' + pageId;
     memberId = lawyerId;
     memberName = $(this).attr('data');
+    printWall.innerHTML = '';
     main();
 });
 
@@ -236,7 +237,7 @@ function main() {
 function renderMessages(messages) {
     printWall.scrollTop = printWall.scrollHeight;
     for (var i = 0, len = messages.length; i < len; i++) {
-        showMsg(printWall, messages[i], true);
+        showMsg(printWall, messages[i], false);
     }
 }
 
