@@ -17,37 +17,43 @@
 </head>
 
 <body>
+
 <div class="side">
     <div class="side-padding">
         <p><a href="customer.html">客户端</a></p>
         <p><a href="lawyer.html">律师端</a></p>
     </div>
 </div>
+
 <div class="side">
     <div class="side-padding">
-        <div>律师端</div>
-        <ul id="customList">
+        <p>律师端</p>
+        <ul class="ylim-custom-list">
             <li><a href="javascript:" id="c1" data="客户1">联系他</a></li>
         </ul>
     </div>
 </div>
+
 <div class="main">
     <h1>赢了网实时通信系统</h1>
     <div class="item">
-        <div id="print-wall" class="print-wall"></div>
+        <div id="ylim_print_wall" class="ylim-print-wall"></div>
     </div>
     <div class="item">
         <label>输入信息：</label>
-        <textarea id="input-send" class="input-send" rows="5" cols="20"></textarea>
-        <div id="send-btn" class="btn">发送</div>
+        <textarea id="ylim_input_send" class="ylim-input-send" rows="5" cols="20"></textarea>
+        <div id="ylim_send_btn" class="btn">发送</div>
     </div>
-    <div id="history_record">历史记录</div>
-    <div id="history_record_pre">历史记录上一页</div>
-    <div id="history_record_next">历史记录下一页</div>
+    <p><a href="javascript:" id="ylim_history_msg_btn">历史记录</a></p>
+    <p>
+        <a href="javascript:" id="ylim_history_msg_pre">上一页</a>
+        <a href="javascript:" id="ylim_history_msg_next">下一页</a>
+    </p>
     <div class="item">
-        <div id="history_records" class="print-wall"></div>
+        <div id="ylim_history_msg" class="ylim-print-wall"></div>
     </div>
 </div>
+
 <!-- S 引入插件，兼容低 IE8+ 等低版本浏览器，注意看下面的注释。如果不需要兼容，可以去掉这部分。 -->
 <!--[if lt IE 10]>
 <script type="text/javascript" src="plugin/web-socket-js/swfobject.js"></script>
@@ -65,8 +71,8 @@
 <script src="js/yingleImApp.js"></script>
 <!--Lawyer端-->
 <div style="display:none;">
-    <span class="pageId" id="p1"></span>
-    <span class="lawyerId" id="l1" data="律师1"></span>
+    <span class="page-id" id="p1"></span>
+    <span class="lawyer-id" id="l1" data="律师1"></span>
 </div>
 </body>
 

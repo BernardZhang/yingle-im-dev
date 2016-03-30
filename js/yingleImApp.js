@@ -6,41 +6,29 @@ var yingleImApp = function () {
 
     var appId = 'X2UogMH6UVTkPJjHDfuPLhIF-gzGzoHsz',// AppId
         roomId = '',// 服务端生成
-
         pageId,// 页面id
         customId,// 客户id
         lawyerId,// 律师id
         clientId,
         memberId,
         memberName,
-        pageLimit = 3, // 每页消息记录条数
 
         rt,// 用来存储 realtimeObject
         room,// 用来存储创建好的 roomObject
-        firstFlag = true,// 监听是否服务器连接成功
-        sendBtn = document.getElementById('send-btn'),
-        inputSend = document.getElementById('input-send'),
-        printWall = document.getElementById('print-wall'),
-        historyMsgWall = document.getElementById('history_records'),
+        firstFlag = true,// 监听服务器是否连接成功
+        sendBtn = document.getElementById('ylim_send_btn'),//发送消息按钮
+        inputSend = document.getElementById('ylim_input_send'),//消息输入框
+        printWall = document.getElementById('ylim_print_wall'),//即时消息展示框
+        historyMsgWall = document.getElementById('ylim_history_msg'),//历史消息展示框
+        pageLimit = 20, // 每页消息记录条数
         timestampList = [], // 记录分页时间节点
         msgTime;// 最早一条消息的时间戳
 
-    // var lowyers = [];
-
-    // 1. 获取律师
-
-    // 2. 根据律师数创建房间
-
-    // 3. 监听房间信息
-
-    // 3. 加入房间， 获取当前后动状态的聊天记录并显示
-
-
     //Customer端
-    $('#lawyerList a').on('click', function () {
+    $('.ylim-lawyer-list a').on('click', function () {
         roomId = '';
-        pageId = $('.pageId').attr('id');
-        customId = $('.customId').attr('id');
+        pageId = $('.page-id').attr('id');
+        customId = $('.custom-id').attr('id');
         lawyerId = $(this).attr('id');
         clientId = customId + '-' + pageId;
         memberId = lawyerId;
@@ -50,10 +38,10 @@ var yingleImApp = function () {
     });
 
     //Lawyer端
-    $('#customList a').on('click', function () {
+    $('.ylim-custom-list a').on('click', function () {
         roomId = '';
-        pageId = $('.pageId').attr('id');
-        lawyerId = $('.lawyerId').attr('id');
+        pageId = $('.page-id').attr('id');
+        lawyerId = $('.lawyer-id').attr('id');
         customId = $(this).attr('id');
         clientId = lawyerId;
         memberId = customId + '-' + pageId;
@@ -63,7 +51,7 @@ var yingleImApp = function () {
     });
 
     // 查看历史纪录
-    $('#history_record').on('click', function () {
+    $('#ylim_history_msg_btn').on('click', function () {
         if (room) {
             timestampList = [];
             getLog({
@@ -74,7 +62,7 @@ var yingleImApp = function () {
                     timestampList.push(data[data.length - 1].timestamp);
                 }
                 console.log(timestampList);
-                renderHistoryRecord(data);
+                renderHistoryMsg(data);
             });
         } else {
             console.log('未连接服务器');
@@ -82,8 +70,8 @@ var yingleImApp = function () {
     });
 
 
-    // 历史纪录上一页
-    $('#history_record_pre').on('click', function () {
+    // 历史消息上一页
+    $('#ylim_history_msg_pre').on('click', function () {
         if (room) {
             getLog({
                 t: timestampList[0],
@@ -92,20 +80,20 @@ var yingleImApp = function () {
                 if (data && data.length) {
                     timestampList.unshift(data[data.length - 1].timestamp);
                     timestampList.unshift(data[0].timestamp);
-                    renderHistoryRecord(data);
+                    renderHistoryMsg(data);
                 } else {
                     // 没有更早的历史纪录
-                    alert('没有更早的历史纪录');
+                    alert('没有更早的历史消息啦！');
                 }
                 console.log(timestampList);
             });
         } else {
-            console.log('未连接服务器');
+            console.log('服务器未连接');
         }
     });
 
-    // 历史纪录下一页
-    $('#history_record_next').on('click', function () {
+    // 历史消息下一页
+    $('#ylim_history_msg_next').on('click', function () {
         if (room) {
             if (timestampList.length < 4) {
                 alert('没有更新的数据啦！');
@@ -118,32 +106,14 @@ var yingleImApp = function () {
                 if (data && data.length) {
                     timestampList.shift();
                     timestampList.shift();
-                    renderHistoryRecord(data);
+                    renderHistoryMsg(data);
                 } else {
-                    alert('没有更新的数据啦！');
+                    alert('没有更新的历史消息啦！');
                 }
                 console.log(timestampList);
             });
         } else {
-            console.log('未连接服务器');
-        }
-    });
-
-    function renderHistoryRecord(messages) {
-        historyMsgWall.innerHTML = '';
-        // messages =
-        for (var i = 0, len = messages.length; i < len; i++) {
-            showMsg(historyMsgWall, messages[i], false);
-        }
-    }
-
-    // 发送信息按钮
-    bindEvent(sendBtn, 'click', sendMsg);
-    bindEvent(document.body, 'keydown', function (e) {
-        if (e.keyCode === 13) {
-            if (!firstFlag) {
-                sendMsg();
-            }
+            console.log('服务器未连接');
         }
     });
 
@@ -172,7 +142,7 @@ var yingleImApp = function () {
             secure: false
         });
 
-        // 监听状态
+        // 监听close状态
         rt.on('close', function () {
             console.log('已与服务器断开！');
         });
@@ -187,10 +157,19 @@ var yingleImApp = function () {
                     room = newRoom;
                     roomId = room.id;
                     room.join(function () {
-                        getRoomMembers();
+
+                        // 获取聊天历史
+                        room.list(function (data) {
+                            getLog(function () {
+                                printWall.scrollTop = printWall.scrollHeight;
+                                showLog(printWall, '您已经加入，可以开始对话了。');
+                                console.log('====================开始对话====================');
+                            });
+                        });
+
                         getLog(renderMessages);
 
-                        // 房间接受消息
+                        // 房间接收消息
                         room.receive(function (data) {
                             if (!msgTime) {
                                 // 存储下最早的一个消息时间戳
@@ -230,17 +209,18 @@ var yingleImApp = function () {
             });
         });
 
-        // 监听服务情况
+        // 监听服务情况（监听断网、网络信号差重连情况）
         rt.on('reuse', function () {
             console.log('服务器正在重连，请耐心等待。。。');
         });
 
-        // 监听错误
+        // 监听错误情况
         rt.on('error', function () {
             console.log('连接遇到错误。。。');
         });
     }
 
+    // 读取消息
     function renderMessages(messages) {
         printWall.scrollTop = printWall.scrollHeight;
         for (var i = 0, len = messages.length; i < len; i++) {
@@ -248,34 +228,23 @@ var yingleImApp = function () {
         }
     }
 
-    // 获取room的成员
-    function getRoomMembers() {
-        // 获取成员列表
-        room.list(function (data) {
-            console.log('当前 Conversation 的成员列表：', data);
-
-            // 获取在线的 client（Ping 方法每次只能获取 20 个用户在线信息）
-            rt.ping(data.slice(0, 20), function (list) {
-                console.log('当前在线的成员列表：', list);
-            });
-
-            var l = data.length;
-
-            // 如果超过 500 人，就踢掉一个。
-            if (l > 490) {
-                room.remove(data[30], function () {
-                    console.log('人数过多，踢掉： ', data[30]);
-                });
-            }
-
-            // 获取聊天历史
-            getLog(function () {
-                printWall.scrollTop = printWall.scrollHeight;
-                showLog(printWall, '您已经加入，可以开始对话了。');
-                console.log('====================开始对话====================');
-            });
-        });
+    // 读取历史消息
+    function renderHistoryMsg(messages) {
+        historyMsgWall.innerHTML = '';
+        for (var i = 0, len = messages.length; i < len; i++) {
+            showMsg(historyMsgWall, messages[i], false);
+        }
     }
+
+    // 发送消息按钮
+    bindEvent(sendBtn, 'click', sendMsg);
+    bindEvent(document.body, 'keydown', function (e) {
+        if (e.keyCode === 13) {
+            if (!firstFlag) {
+                sendMsg();
+            }
+        }
+    });
 
 
     // 发送信息
@@ -299,33 +268,11 @@ var yingleImApp = function () {
         }, {
             type: 'text'
         }, function (data) {
-
             // 发送成功之后的回调
             inputSend.value = '';
             showLog(printWall, formatTime(data.t) + '<br/>' + '自己： ', val);
             printWall.scrollTop = printWall.scrollHeight;
         });
-
-        // 发送多媒体消息
-        // room.send({
-        //     text: '图片测试',
-        //     // 自定义的属性
-        //     attr: {
-        //         a: 123
-        //     },
-        //     url: 'https://leancloud.cn/images/static/press/Logo%20-%20Blue%20Padding.png',
-        //     metaData: {
-        //         name: 'logo',
-        //         format: 'png',
-        //         height: 123,
-        //         width: 123,
-        //         size: 888
-        //     }
-        // }, {
-        //     type: 'image'
-        // }, function (data) {
-        //     //console.log('图片数据发送成功！');
-        // });
     }
 
     // 显示接收到的信息
@@ -347,14 +294,7 @@ var yingleImApp = function () {
         }
     }
 
-    // 拉取历史
-    bindEvent(printWall, 'scroll', function (e) {
-        if (printWall.scrollTop < 20) {
-            // getLog();
-        }
-    });
-
-    // 获取消息历史
+    // getlog
     function getLog(params, callback) {
         var cb = function (data) {
             console.log('log', data, data.length);
@@ -370,7 +310,6 @@ var yingleImApp = function () {
             };
             room.log(params, cb);
         } else {
-
             room.log(params, cb);
         }
     }
@@ -379,7 +318,7 @@ var yingleImApp = function () {
     function showLog(msgBox, msg, data, isBefore) {
         if (data) {
             // console.log(msg, data);
-            msg = msg + '<span class="strong">' + encodeHTML(JSON.stringify(data)) + '</span>';
+            msg = msg + '<span class="msg">' + encodeHTML(JSON.stringify(data)) + '</span>';
         }
         var p = document.createElement('p');
         p.innerHTML = msg;

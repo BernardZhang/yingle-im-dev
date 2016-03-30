@@ -17,16 +17,18 @@
 </head>
 
 <body>
+
 <div class="side">
     <div class="side-padding">
         <p><a href="customer.html">客户端</a></p>
         <p><a href="lawyer.html">律师端</a></p>
     </div>
 </div>
+
 <div class="side">
     <div class="side-padding">
-        <div>客户端</div>
-        <ul id="lawyerList">
+        <p>客户端</p>
+        <ul class="ylim-lawyer-list">
             <li><a href="javascript:" id="l1" data="律师1">律师1</a></li>
             <li><a href="javascript:" id="l2" data="律师2">律师2</a></li>
             <li><a href="javascript:" id="l3" data="律师3">律师3</a></li>
@@ -39,23 +41,23 @@
 <div class="main">
     <h1>赢了网实时通信系统</h1>
     <div class="item">
-        <div id="print-wall" class="print-wall"></div>
+        <div id="ylim_print_wall" class="ylim-print-wall"></div>
     </div>
     <div class="item">
         <label>输入信息：</label>
-        <textarea id="input-send" class="input-send" rows="5" cols="20"></textarea>
-        <div id="send-btn" class="btn">发送</div>
+        <textarea id="ylim_input_send" class="ylim-input-send" rows="5" cols="20"></textarea>
+        <div id="ylim_send_btn" class="btn">发送</div>
     </div>
-    <p><a href="javascript:" id="history_record">历史记录</a></p>
-    <p>&#160;</p>
+    <p><a href="javascript:" id="ylim_history_msg_btn">历史记录</a></p>
     <p>
-        <a href="javascript:" id="history_record_pre">上一页</a>
-        <a href="javascript:" id="history_record_next">下一页</a>
+        <a href="javascript:" id="ylim_history_msg_pre">上一页</a>
+        <a href="javascript:" id="ylim_history_msg_next">下一页</a>
     </p>
     <div class="item">
-        <div id="history_records" class="print-wall"></div>
+        <div id="ylim_history_msg" class="ylim-print-wall"></div>
     </div>
 </div>
+
 <!-- S 引入插件，兼容低 IE8+ 等低版本浏览器，注意看下面的注释。如果不需要兼容，可以去掉这部分。 -->
 <!--[if lt IE 10]>
 <script type="text/javascript" src="plugin/web-socket-js/swfobject.js"></script>
@@ -73,8 +75,8 @@
 <script src="js/yingleImApp.js"></script>
 <!--Custom端-->
 <div style="display:none;">
-    <span class="pageId" id="p1"></span>
-    <span class="customId" id="c1" data="客户1"></span>
+    <span class="page-id" id="p1"></span>
+    <span class="custom-id" id="c1" data="客户1"></span>
 </div>
 
 
