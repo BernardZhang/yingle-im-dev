@@ -35,9 +35,6 @@ var
 
 // 3. 加入房间， 获取当前后动状态的聊天记录并显示
 
-// createRooms
-//
-// creteRoom
 
 //Customer端
 $('#lawyerList a').on('click', function () {
@@ -67,57 +64,69 @@ $('#customList a').on('click', function () {
 
 // 查看历史纪录
 $('#history_record').on('click', function () {
-    timestampList = [];
-    getLog({
-        limit: pageLimit
-    }, function (data) {
-        timestampList.push(data[0].timestamp);
-        if (data.length > 1) {
-            timestampList.push(data[data.length - 1].timestamp);
-        }
-        console.log(timestampList);
-        renderHistoryRecord(data);
-    });
+    if (room) {
+        timestampList = [];
+        getLog({
+            limit: pageLimit
+        }, function (data) {
+            timestampList.push(data[0].timestamp);
+            if (data.length > 1) {
+                timestampList.push(data[data.length - 1].timestamp);
+            }
+            console.log(timestampList);
+            renderHistoryRecord(data);
+        });
+    } else {
+        console.log('未连接服务器');
+    }
 });
 
 
 // 历史纪录上一页
 $('#history_record_pre').on('click', function () {
-    getLog({
-        t: timestampList[0],
-        limit: pageLimit
-    }, function (data) {
-        if (data && data.length) {
-            timestampList.unshift(data[data.length - 1].timestamp);
-            timestampList.unshift(data[0].timestamp);
-            renderHistoryRecord(data);
-        } else {
-            // 没有更早的历史纪录
-            alert('没有更早的历史纪录');
-        }
-        console.log(timestampList);
-    });
+    if (room) {
+        getLog({
+            t: timestampList[0],
+            limit: pageLimit
+        }, function (data) {
+            if (data && data.length) {
+                timestampList.unshift(data[data.length - 1].timestamp);
+                timestampList.unshift(data[0].timestamp);
+                renderHistoryRecord(data);
+            } else {
+                // 没有更早的历史纪录
+                alert('没有更早的历史纪录');
+            }
+            console.log(timestampList);
+        });
+    } else {
+        console.log('未连接服务器');
+    }
 });
 
 // 历史纪录下一页
 $('#history_record_next').on('click', function () {
-    if (timestampList.length < 4) {
-        alert('没有更新的数据啦！');
-        return;
-    }
-    getLog({
-        t: timestampList[4] || '',
-        limit: pageLimit
-    }, function (data) {
-        if (data && data.length) {
-            timestampList.shift();
-            timestampList.shift();
-            renderHistoryRecord(data);
-        } else {
+    if (room) {
+        if (timestampList.length < 4) {
             alert('没有更新的数据啦！');
+            return;
         }
-        console.log(timestampList);
-    });
+        getLog({
+            t: timestampList[4] || '',
+            limit: pageLimit
+        }, function (data) {
+            if (data && data.length) {
+                timestampList.shift();
+                timestampList.shift();
+                renderHistoryRecord(data);
+            } else {
+                alert('没有更新的数据啦！');
+            }
+            console.log(timestampList);
+        });
+    } else {
+        console.log('未连接服务器');
+    }
 });
 
 function renderHistoryRecord(messages) {
